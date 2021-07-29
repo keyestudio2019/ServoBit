@@ -10,10 +10,18 @@
     "files": [
         "README.md",
         "servobit.ts"
-     ],
+    ],
     "testFiles": [
         "tests.ts"
     ],
-    "yotta": {},
-    "public": true
+    "public": true,
+    "targetVersions": {
+        "target": "4.0.9",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj",
+    "yotta": {}
 }
