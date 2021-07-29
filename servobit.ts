@@ -37,7 +37,7 @@ namespace ServoBit
     let _flashing = false;
 
 // Servo PCA9685
-    let PCA = 0x47;	// i2c address of PCA9685 servo controller
+    let PCA9685_ADDRESS = 0x47;	// i2c address of PCA9685 servo controller
     let initI2C = false;
     let _i2cError = 0;
     let SERVOS = 0x06; // first servo address for start byte low
@@ -56,25 +56,25 @@ namespace ServoBit
 
         i2cData[0] = 0;		// Mode 1 register
         i2cData[1] = 0x10;	// put to sleep
-        pins.i2cWriteBuffer(PCA, i2cData, false);
+        pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
 
         i2cData[0] = 0xFE;	// Prescale register
         i2cData[1] = 101;	// set to 60 Hz
-        pins.i2cWriteBuffer(PCA, i2cData, false);
+        pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
 
         i2cData[0] = 0;		// Mode 1 register
         i2cData[1] = 0x81;	// Wake up
-        pins.i2cWriteBuffer(PCA, i2cData, false);
+        pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
 
         for (let servo=0; servo<16; servo++)
         {
             i2cData[0] = SERVOS + servo*4 + 0;	// Servo register
             i2cData[1] = 0x00;			// low byte start - always 0
-            _i2cError = pins.i2cWriteBuffer(PCA, i2cData, false);
+            _i2cError = pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
 
             i2cData[0] = SERVOS + servo*4 + 1;	// Servo register
             i2cData[1] = 0x00;			// high byte start - always 0
-            pins.i2cWriteBuffer(PCA, i2cData, false);
+            pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
 
             servoTarget[servo]=0;
             servoActual[servo]=0;
@@ -126,11 +126,11 @@ namespace ServoBit
 
         i2cData[0] = SERVOS + servo*4 + 2;	// Servo register
         i2cData[1] = (stop & 0xff);		// low byte stop
-        pins.i2cWriteBuffer(PCA, i2cData, false);
+        pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
 
         i2cData[0] = SERVOS + servo*4 + 3;	// Servo register
         i2cData[1] = (stop >> 8);		// high byte stop
-        pins.i2cWriteBuffer(PCA, i2cData, false);
+        pins.i2cWriteBuffer(PCA9685_ADDRESS, i2cData, false);
         servoActual[servo] = angle;
     }
 
